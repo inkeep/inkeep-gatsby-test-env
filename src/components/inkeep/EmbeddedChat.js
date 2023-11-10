@@ -1,5 +1,5 @@
 import * as React from "react"
-import { InkeepEmbeddedChat } from "@inkeep/widgets"
+import { useState, useEffect } from "react"
 
 // background-color: var(--ikp-colors-inkeep-primary-lighter);
 
@@ -61,7 +61,7 @@ import { InkeepEmbeddedChat } from "@inkeep/widgets"
 
 const InkeepEmbeddedChatSettings = {
   // stylesheets,
-  stylesheetUrls: ['/inkeep.css'],
+  stylesheetUrls: ["/inkeep.css"],
   baseSettings: {
     apiKey: process.env.REACT_APP_INKEEP_INTEGRATION_API_KEY || "",
     integrationId: process.env.REACT_APP_INKEEP_INTEGRATION_ID || "",
@@ -73,17 +73,26 @@ const InkeepEmbeddedChatSettings = {
         AIChatPageWrapper: {
           defaultProps: {
             size: {
-              base: 'expand',
-              md: 'expand',
+              base: "expand",
+              md: "expand",
             },
           },
         },
       },
     },
   },
-};
+}
 
 export const EmbeddedChat = () => {
+  const [EmbeddedChat, setEmbeddedChat] = useState(null)
+
+  useEffect(() => {
+    (async () => {
+      const { InkeepEmbeddedChat } = await import("@inkeep/widgets")
+      setEmbeddedChat(() => InkeepEmbeddedChat)
+    })()
+  }, [])
+
   return (
     <div
       style={{
@@ -94,7 +103,12 @@ export const EmbeddedChat = () => {
         height: "100%",
       }}
     >
-      <InkeepEmbeddedChat {...InkeepEmbeddedChatSettings} />
+      {EmbeddedChat ? (
+          <EmbeddedChat {...InkeepEmbeddedChatSettings} />
+        ) : (
+          <div />
+        )
+      }
     </div>
-  );
-};
+  )
+}

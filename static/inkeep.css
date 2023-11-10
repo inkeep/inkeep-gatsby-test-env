@@ -8,9 +8,9 @@
 }
 
 .ikp-content-parser__code {
-  background-color: #fafafa;
+  background-color: var(--color-code-bg);
   border: 1px solid #e6e5ea;
-  color: #1b1a21;
+  color: var(--color-primary);
   border-radius: 4px;
   font-style: mono;
   font-weight: 600;
